@@ -1,0 +1,101 @@
+@model IEnumerable<CinemaBooking.Models.Movie>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Des)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MainImg)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SubImages)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Actors)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CinemaId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cinema)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Des)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.DateTime)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.MainImg)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.SubImages)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Actors)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.CategoryId)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Category)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.CinemaId)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Cinema)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

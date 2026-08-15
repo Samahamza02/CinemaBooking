@@ -1,0 +1,89 @@
+@model CinemaBooking.Models.Movie
+
+@{
+    ViewData["Title"] = "Create Movie";
+}
+
+<h1>Create Movie</h1>
+
+<form asp-action="Create" method="post">
+
+    <div class="form-group mb-3">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Des">Description</label>
+        <textarea asp-for="Des" class="form-control"></textarea>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Price"></label>
+        <input asp-for="Price" class="form-control" />
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Status"></label>
+
+        <select asp-for="Status" class="form-control">
+            <option value="Available">Available</option>
+            <option value="Coming Soon">Coming Soon</option>
+            <option value="Expired">Expired</option>
+        </select>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="DateTime"></label>
+        <input asp-for="DateTime" type="datetime-local" class="form-control" />
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="MainImg">Main Image</label>
+        <input asp-for="MainImg" class="form-control" />
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="SubImages">Sub Images</label>
+        <input asp-for="SubImages" class="form-control" />
+    </div>
+
+    <div class="form-group mb-3">
+        <label>Category</label>
+
+        <select asp-for="CategoryId" class="form-control">
+            <option value="">-- Select Category --</option>
+
+            @foreach (var category in ViewBag.Categories)
+            {
+                <option value="@category.Id">
+                    @category.Name
+                </option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group mb-3">
+        <label>Cinema</label>
+
+        <select asp-for="CinemaId" class="form-control">
+            <option value="">-- Select Cinema --</option>
+
+            @foreach (var cinema in ViewBag.Cinemas)
+            {
+                <option value="@cinema.Id">
+                    @cinema.Name
+                </option>
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Create
+    </button>
+
+    <a asp-action="Index" class="btn btn-secondary">
+        Back
+    </a>
+
+</form>
