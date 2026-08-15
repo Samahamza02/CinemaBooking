@@ -38,10 +38,15 @@
         <input asp-for="DateTime" type="datetime-local" class="form-control" />
     </div>
 
-    <div class="form-group mb-3">
-        <label asp-for="MainImg">Main Image</label>
-        <input asp-for="MainImg" class="form-control" />
-    </div>
+    <div class="mb-3">
+        <label asp-for="MainImg" class="form-label">
+            Movie Image
+        </label>
+
+        <input asp-for="MainImg"
+               class="form-control"
+               placeholder="/images/movie1.jpg" />
+    </div>>
 
     <div class="form-group mb-3">
         <label asp-for="SubImages">Sub Images</label>

@@ -1,101 +1,224 @@
 @model IEnumerable<CinemaBooking.Models.Movie>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Movies";
 }
 
-<h1>Index</h1>
+<div class="d-flex justify-content-between align-items-center mb-4">
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Des)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MainImg)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SubImages)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Actors)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CategoryId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Category)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CinemaId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Cinema)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(model => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Des)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.DateTime)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.MainImg)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.SubImages)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Actors)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.CategoryId)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Category)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.CinemaId)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Cinema)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    <div>
+        <h2 class="mb-1">Movies</h2>
+        <p class="text-600 mb-0">
+            Manage movies in your cinema system
+        </p>
+    </div>
+
+    <a asp-action="Create" class="btn btn-primary">
+        <span class="fas fa-plus me-2"></span>
+        Add Movie
+    </a>
+
+</div>
+
+
+<div class="card">
+
+    <div class="card-header bg-light">
+
+        <div class="row align-items-center">
+
+            <div class="col">
+
+                <h5 class="mb-0">
+                    All Movies
+                </h5>
+
+            </div>
+
+            <div class="col-auto">
+
+                <span class="badge bg-primary">
+                    @Model.Count() Movies
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="card-body p-0">
+
+        <div class="table-responsive">
+
+            <table class="table table-hover mb-0">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Movie
+                        </th>
+
+                        <th>
+                            Category
+                        </th>
+
+                        <th>
+                            Cinema
+                        </th>
+
+                        <th>
+                            Price
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th class="text-end">
+                            Actions
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @foreach (var movie in Model)
+                    {
+                        <tr>
+
+                            <td>
+
+                                <div class="d-flex align-items-center">
+
+                                    <div class="avatar avatar-xl">
+
+                                        @if (!string.IsNullOrEmpty(movie.MainImg))
+                                        {
+                                            <img src="@movie.MainImg"
+                                                 class="rounded"
+                                                 width="50"
+                                                 height="50"
+                                                 style="object-fit:cover;"
+                                                 alt="@movie.Name">
+                                        }
+                                        else
+                                        {
+                                            <div class="avatar-name rounded">
+                                                <span class="fas fa-film"></span>
+                                            </div>
+                                        }
+
+                                    </div>
+
+                                    <div class="ms-3">
+
+                                        <h6 class="mb-0">
+                                            @movie.Name
+                                        </h6>
+
+                                        <small class="text-600">
+                                            @movie.DateTime.ToString("dd MMM yyyy")
+                                        </small>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+
+                            <td>
+
+                                <span class="badge badge-soft-primary">
+                                    @movie.Category?.Name
+                                </span>
+
+                            </td>
+
+
+                            <td>
+                                @movie.Cinema?.Name
+                            </td>
+
+
+                            <td>
+
+                                <strong>
+                                    @movie.Price.ToString("0.00")
+                                </strong>
+
+                            </td>
+
+
+                            <td>
+
+                                @if (movie.Status == "Available")
+                                {
+                                    <span class="badge badge-soft-success">
+                                        Available
+                                    </span>
+                                }
+                                else if (movie.Status == "Coming Soon")
+                                {
+                                    <span class="badge badge-soft-warning">
+                                        Coming Soon
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-soft-secondary">
+                                        @movie.Status
+                                    </span>
+                                }
+
+                            </td>
+
+
+                            <td class="text-end">
+
+                                <a asp-action="Details"
+                                   asp-route-id="@movie.Id"
+                                   class="btn btn-sm btn-falcon-default">
+
+                                    <span class="fas fa-eye"></span>
+
+                                </a>
+
+
+                                <a asp-action="Edit"
+                                   asp-route-id="@movie.Id"
+                                   class="btn btn-sm btn-falcon-default">
+
+                                    <span class="fas fa-edit"></span>
+
+                                </a>
+
+
+                                <a asp-action="Delete"
+                                   asp-route-id="@movie.Id"
+                                   class="btn btn-sm btn-falcon-danger">
+
+                                    <span class="fas fa-trash"></span>
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
