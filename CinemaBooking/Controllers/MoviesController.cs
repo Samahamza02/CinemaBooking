@@ -1,22 +1,31 @@
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using CinemaBooking.Models;
-using CinemaBooking.Data;
+using CinemaBooking.Repositories;
 
 public class MoviesController : Controller
 {
-    private readonly ApplicationDbContext _context;
+    private readonly IMovieRepository _movieRepository;
+    private readonly ICategoryRepository _categoryRepository;
+    private readonly ICinemaRepository _cinemaRepository;
+    private readonly IActorRepository _actorRepository;
 
-    public MoviesController(ApplicationDbContext context)
+    public MoviesController(
+        IMovieRepository movieRepository,
+        ICategoryRepository categoryRepository,
+        ICinemaRepository cinemaRepository,
+        IActorRepository actorRepository)
     {
-        _context = context;
+        _movieRepository = movieRepository;
+        _categoryRepository = categoryRepository;
+        _cinemaRepository = cinemaRepository;
+        _actorRepository = actorRepository;
     }
 
     // GET: MOVIES
-    public async Task<IActionResult> Index()    
+    public async Task<IActionResult> Index()
     {
-        return View(await _context.Movies.ToListAsync());
+        return View(await _movieRepository.GetAllAsync());
     }
 
     // GET: MOVIES/Details/5
@@ -27,8 +36,7 @@ public class MoviesController : Controller
             return NotFound();
         }
 
-        var movie = await _context.Movies
-            .FirstOrDefaultAsync(m => m.Id == id);
+        var movie = await _movieRepository.GetByIdAsync(id.Value);
         if (movie == null)
         {
             return NotFound();
@@ -38,27 +46,23 @@ public class MoviesController : Controller
     }
 
     // GET: MOVIES/Create
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
-        ViewBag.Categories = _context.Categories.ToList();
-
-        ViewBag.Cinemas = _context.Cinemas.ToList();
-
-        ViewBag.Actors = _context.Actors.ToList();
+        ViewBag.Categories = await _categoryRepository.GetAllAsync();
+        ViewBag.Cinemas = await _cinemaRepository.GetAllAsync();
+        ViewBag.Actors = await _actorRepository.GetAllAsync();
         return View();
     }
 
     // POST: MOVIES/Create
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create([Bind("Id,Name,Des,Price,Status,DateTime,MainImg,SubImages,Actors,CategoryId,Category,CinemaId,Cinema")] Movie movie)
     {
         if (ModelState.IsValid)
         {
-            _context.Add(movie);
-            await _context.SaveChangesAsync();
+            await _movieRepository.AddAsync(movie);
+            await _movieRepository.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(movie);
@@ -72,7 +76,7 @@ public class MoviesController : Controller
             return NotFound();
         }
 
-        var movie = await _context.Movies.FindAsync(id);
+        var movie = await _movieRepository.GetByIdAsync(id.Value);
         if (movie == null)
         {
             return NotFound();
@@ -81,8 +85,6 @@ public class MoviesController : Controller
     }
 
     // POST: MOVIES/Edit/5
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int? id, [Bind("Id,Name,Des,Price,Status,DateTime,MainImg,SubImages,Actors,CategoryId,Category,CinemaId,Cinema")] Movie movie)
@@ -96,12 +98,12 @@ public class MoviesController : Controller
         {
             try
             {
-                _context.Update(movie);
-                await _context.SaveChangesAsync();
+                _movieRepository.Update(movie);
+                await _movieRepository.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException)
             {
-                if (!MovieExists(movie.Id))
+                if (!await _movieRepository.ExistsAsync(movie.Id))
                 {
                     return NotFound();
                 }
@@ -123,8 +125,7 @@ public class MoviesController : Controller
             return NotFound();
         }
 
-        var movie = await _context.Movies
-            .FirstOrDefaultAsync(m => m.Id == id);
+        var movie = await _movieRepository.GetByIdAsync(id.Value);
         if (movie == null)
         {
             return NotFound();
@@ -138,20 +139,13 @@ public class MoviesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int? id)
     {
-        var movie = await _context.Movies.FindAsync(id);
+        var movie = id.HasValue ? await _movieRepository.GetByIdAsync(id.Value) : null;
         if (movie != null)
         {
-            _context.Movies.Remove(movie);
+            _movieRepository.Remove(movie);
         }
 
-        await _context.SaveChangesAsync();
+        await _movieRepository.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
-
-    private bool MovieExists(int? id)
-    {
-        return _context.Movies.Any(e => e.Id == id);
-    }
-
-
 }

@@ -1,22 +1,21 @@
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using CinemaBooking.Models;
-using CinemaBooking.Data;
+using CinemaBooking.Repositories;
 
 public class CinemasController : Controller
 {
-    private readonly ApplicationDbContext _context;
+    private readonly ICinemaRepository _cinemaRepository;
 
-    public CinemasController(ApplicationDbContext context)
+    public CinemasController(ICinemaRepository cinemaRepository)
     {
-        _context = context;
+        _cinemaRepository = cinemaRepository;
     }
 
     // GET: CINEMAS
-    public async Task<IActionResult> Index()    
+    public async Task<IActionResult> Index()
     {
-        return View(await _context.Cinemas.ToListAsync());
+        return View(await _cinemaRepository.GetAllAsync());
     }
 
     // GET: CINEMAS/Details/5
@@ -27,8 +26,7 @@ public class CinemasController : Controller
             return NotFound();
         }
 
-        var cinema = await _context.Cinemas
-            .FirstOrDefaultAsync(m => m.Id == id);
+        var cinema = await _cinemaRepository.GetByIdAsync(id.Value);
         if (cinema == null)
         {
             return NotFound();
@@ -44,16 +42,14 @@ public class CinemasController : Controller
     }
 
     // POST: CINEMAS/Create
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create([Bind("Id,Name,Imag,Movies")] Cinema cinema)
     {
         if (ModelState.IsValid)
         {
-            _context.Add(cinema);
-            await _context.SaveChangesAsync();
+            await _cinemaRepository.AddAsync(cinema);
+            await _cinemaRepository.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(cinema);
@@ -67,7 +63,7 @@ public class CinemasController : Controller
             return NotFound();
         }
 
-        var cinema = await _context.Cinemas.FindAsync(id);
+        var cinema = await _cinemaRepository.GetByIdAsync(id.Value);
         if (cinema == null)
         {
             return NotFound();
@@ -76,8 +72,6 @@ public class CinemasController : Controller
     }
 
     // POST: CINEMAS/Edit/5
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int? id, [Bind("Id,Name,Imag,Movies")] Cinema cinema)
@@ -91,12 +85,12 @@ public class CinemasController : Controller
         {
             try
             {
-                _context.Update(cinema);
-                await _context.SaveChangesAsync();
+                _cinemaRepository.Update(cinema);
+                await _cinemaRepository.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException)
             {
-                if (!CinemaExists(cinema.Id))
+                if (!await _cinemaRepository.ExistsAsync(cinema.Id))
                 {
                     return NotFound();
                 }
@@ -118,8 +112,7 @@ public class CinemasController : Controller
             return NotFound();
         }
 
-        var cinema = await _context.Cinemas
-            .FirstOrDefaultAsync(m => m.Id == id);
+        var cinema = await _cinemaRepository.GetByIdAsync(id.Value);
         if (cinema == null)
         {
             return NotFound();
@@ -133,18 +126,13 @@ public class CinemasController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int? id)
     {
-        var cinema = await _context.Cinemas.FindAsync(id);
+        var cinema = id.HasValue ? await _cinemaRepository.GetByIdAsync(id.Value) : null;
         if (cinema != null)
         {
-            _context.Cinemas.Remove(cinema);
+            _cinemaRepository.Remove(cinema);
         }
 
-        await _context.SaveChangesAsync();
+        await _cinemaRepository.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
-    }
-
-    private bool CinemaExists(int? id)
-    {
-        return _context.Cinemas.Any(e => e.Id == id);
     }
 }

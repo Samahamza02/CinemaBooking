@@ -1,22 +1,22 @@
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using CinemaBooking.Models;
-using CinemaBooking.Data;
+using CinemaBooking.Repositories;
 
 public class ActorsController : Controller
 {
-    private readonly ApplicationDbContext _context;
+ 
+    private readonly IActorRepository _actorRepository;
 
-    public ActorsController(ApplicationDbContext context)
+    public ActorsController(IActorRepository actorRepository)
     {
-        _context = context;
+        _actorRepository = actorRepository;
     }
 
     // GET: ACTORS
-    public async Task<IActionResult> Index()    
+    public async Task<IActionResult> Index()
     {
-        return View(await _context.Actors.ToListAsync());
+        return View(await _actorRepository.GetAllAsync());
     }
 
     // GET: ACTORS/Details/5
@@ -27,8 +27,7 @@ public class ActorsController : Controller
             return NotFound();
         }
 
-        var actor = await _context.Actors
-            .FirstOrDefaultAsync(m => m.Id == id);
+        var actor = await _actorRepository.GetByIdAsync(id.Value);
         if (actor == null)
         {
             return NotFound();
@@ -44,16 +43,14 @@ public class ActorsController : Controller
     }
 
     // POST: ACTORS/Create
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create([Bind("Id,Name,Imag")] Actor actor)
     {
         if (ModelState.IsValid)
         {
-            _context.Add(actor);
-            await _context.SaveChangesAsync();
+            await _actorRepository.AddAsync(actor);
+            await _actorRepository.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(actor);
@@ -67,7 +64,7 @@ public class ActorsController : Controller
             return NotFound();
         }
 
-        var actor = await _context.Actors.FindAsync(id);
+        var actor = await _actorRepository.GetByIdAsync(id.Value);
         if (actor == null)
         {
             return NotFound();
@@ -76,8 +73,6 @@ public class ActorsController : Controller
     }
 
     // POST: ACTORS/Edit/5
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int? id, [Bind("Id,Name,Imag")] Actor actor)
@@ -91,12 +86,12 @@ public class ActorsController : Controller
         {
             try
             {
-                _context.Update(actor);
-                await _context.SaveChangesAsync();
+                _actorRepository.Update(actor);
+                await _actorRepository.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException)
             {
-                if (!ActorExists(actor.Id))
+                if (!await _actorRepository.ExistsAsync(actor.Id))
                 {
                     return NotFound();
                 }
@@ -118,8 +113,7 @@ public class ActorsController : Controller
             return NotFound();
         }
 
-        var actor = await _context.Actors
-            .FirstOrDefaultAsync(m => m.Id == id);
+        var actor = await _actorRepository.GetByIdAsync(id.Value);
         if (actor == null)
         {
             return NotFound();
@@ -133,18 +127,13 @@ public class ActorsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int? id)
     {
-        var actor = await _context.Actors.FindAsync(id);
+        var actor = id.HasValue ? await _actorRepository.GetByIdAsync(id.Value) : null;
         if (actor != null)
         {
-            _context.Actors.Remove(actor);
+            _actorRepository.Remove(actor);
         }
 
-        await _context.SaveChangesAsync();
+        await _actorRepository.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
-    }
-
-    private bool ActorExists(int? id)
-    {
-        return _context.Actors.Any(e => e.Id == id);
     }
 }

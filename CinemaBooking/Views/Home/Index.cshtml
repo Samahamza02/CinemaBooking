@@ -1,8 +1,449 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Dashboard";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<!-- ============================= -->
+<!-- PAGE HEADER -->
+<!-- ============================= -->
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+
+        <h2 class="mb-1">
+            Cinema Dashboard
+        </h2>
+
+        <p class="text-600 mb-0">
+            Welcome to CinemaBooking
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- ============================= -->
+<!-- STATISTICS -->
+<!-- ============================= -->
+
+<div class="row g-3 mb-3">
+
+
+    <!-- MOVIES -->
+
+    <div class="col-sm-6 col-xl-3">
+
+        <div class="card h-100">
+
+            <div class="card-body">
+
+                <div class="d-flex align-items-center">
+
+                    <div class="avatar avatar-xl bg-primary-subtle">
+
+                        <span class="fas fa-film text-primary fs-3"></span>
+
+                    </div>
+
+                    <div class="ms-3">
+
+                        <h6 class="mb-1 text-700">
+                            Total Movies
+                        </h6>
+
+                        <h3 class="mb-0">
+                            @ViewBag.MovieCount
+                        </h3>
+
+                    </div>
+
+                </div>
+
+                <hr />
+
+                <a asp-controller="Movies"
+                   asp-action="Index"
+                   class="fs-10">
+
+                    View Movies
+                    <span class="fas fa-chevron-right ms-1"></span>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- CATEGORIES -->
+
+    <div class="col-sm-6 col-xl-3">
+
+        <div class="card h-100">
+
+            <div class="card-body">
+
+                <div class="d-flex align-items-center">
+
+                    <div class="avatar avatar-xl bg-success-subtle">
+
+                        <span class="fas fa-list text-success fs-3"></span>
+
+                    </div>
+
+                    <div class="ms-3">
+
+                        <h6 class="mb-1 text-700">
+                            Categories
+                        </h6>
+
+                        <h3 class="mb-0">
+                            @ViewBag.CategoryCount
+                        </h3>
+
+                    </div>
+
+                </div>
+
+                <hr />
+
+                <a asp-controller="Categories"
+                   asp-action="Index"
+                   class="fs-10">
+
+                    View Categories
+                    <span class="fas fa-chevron-right ms-1"></span>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- CINEMAS -->
+
+    <div class="col-sm-6 col-xl-3">
+
+        <div class="card h-100">
+
+            <div class="card-body">
+
+                <div class="d-flex align-items-center">
+
+                    <div class="avatar avatar-xl bg-warning-subtle">
+
+                        <span class="fas fa-building text-warning fs-3"></span>
+
+                    </div>
+
+                    <div class="ms-3">
+
+                        <h6 class="mb-1 text-700">
+                            Cinemas
+                        </h6>
+
+                        <h3 class="mb-0">
+                            @ViewBag.CinemaCount
+                        </h3>
+
+                    </div>
+
+                </div>
+
+                <hr />
+
+                <a asp-controller="Cinemas"
+                   asp-action="Index"
+                   class="fs-10">
+
+                    View Cinemas
+                    <span class="fas fa-chevron-right ms-1"></span>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ACTORS -->
+
+    <div class="col-sm-6 col-xl-3">
+
+        <div class="card h-100">
+
+            <div class="card-body">
+
+                <div class="d-flex align-items-center">
+
+                    <div class="avatar avatar-xl bg-info-subtle">
+
+                        <span class="fas fa-users text-info fs-3"></span>
+
+                    </div>
+
+                    <div class="ms-3">
+
+                        <h6 class="mb-1 text-700">
+                            Actors
+                        </h6>
+
+                        <h3 class="mb-0">
+                            @ViewBag.ActorCount
+                        </h3>
+
+                    </div>
+
+                </div>
+
+                <hr />
+
+                <a asp-controller="Actors"
+                   asp-action="Index"
+                   class="fs-10">
+
+                    View Actors
+                    <span class="fas fa-chevron-right ms-1"></span>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ============================= -->
+<!-- WELCOME CARD -->
+<!-- ============================= -->
+
+<div class="row g-3 mb-3">
+
+    <div class="col-12">
+
+        <div class="card overflow-hidden">
+
+            <div class="card-body">
+
+                <div class="row align-items-center">
+
+                    <div class="col-lg-7">
+
+                        <h3 class="text-primary mb-2">
+                            Welcome to CinemaBooking 🎬
+                        </h3>
+
+                        <p class="mb-3 text-700">
+
+                            Manage your movies, cinemas, categories
+                            and actors from one place.
+
+                        </p>
+
+                        <div class="d-flex gap-2">
+
+                            <a asp-controller="Movies"
+                               asp-action="Create"
+                               class="btn btn-primary">
+
+                                <span class="fas fa-plus me-2"></span>
+
+                                Add Movie
+
+                            </a>
+
+                            <a asp-controller="Cinemas"
+                               asp-action="Create"
+                               class="btn btn-outline-primary">
+
+                                <span class="fas fa-building me-2"></span>
+
+                                Add Cinema
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-lg-5 text-center">
+
+                        <img src="~/assets/img/illustrations/ecommerce-bg.png"
+                             class="img-fluid"
+                             style="max-height:180px;"
+                             alt="Cinema">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ============================= -->
+<!-- MANAGEMENT CARDS -->
+<!-- ============================= -->
+
+<div class="row g-3">
+
+
+    <!-- MOVIES -->
+
+    <div class="col-lg-6">
+
+        <div class="card h-100">
+
+            <div class="card-header">
+
+                <h5 class="mb-0">
+                    Movie Management
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <p class="text-700">
+                    Add, edit and manage all movies available
+                    in your cinema booking system.
+                </p>
+
+                <a asp-controller="Movies"
+                   asp-action="Index"
+                   class="btn btn-falcon-primary btn-sm">
+
+                    Manage Movies
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- CINEMAS -->
+
+    <div class="col-lg-6">
+
+        <div class="card h-100">
+
+            <div class="card-header">
+
+                <h5 class="mb-0">
+                    Cinema Management
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <p class="text-700">
+                    Manage cinemas and the movies shown in
+                    each cinema.
+                </p>
+
+                <a asp-controller="Cinemas"
+                   asp-action="Index"
+                   class="btn btn-falcon-primary btn-sm">
+
+                    Manage Cinemas
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- CATEGORIES -->
+
+    <div class="col-lg-6">
+
+        <div class="card h-100">
+
+            <div class="card-header">
+
+                <h5 class="mb-0">
+                    Categories
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <p class="text-700">
+                    Organize movies by genre and category.
+                </p>
+
+                <a asp-controller="Categories"
+                   asp-action="Index"
+                   class="btn btn-falcon-success btn-sm">
+
+                    Manage Categories
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ACTORS -->
+
+    <div class="col-lg-6">
+
+        <div class="card h-100">
+
+            <div class="card-header">
+
+                <h5 class="mb-0">
+                    Actors
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <p class="text-700">
+                    Manage actors and their movies.
+                </p>
+
+                <a asp-controller="Actors"
+                   asp-action="Index"
+                   class="btn btn-falcon-info btn-sm">
+
+                    Manage Actors
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
 </div>

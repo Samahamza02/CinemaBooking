@@ -1,50 +1,328 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - CinemaBooking</title>
-    <script type="importmap"></script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/CinemaBooking.styles.css" asp-append-version="true" />
-</head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CinemaBooking</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+<html lang="en-US" dir="ltr">
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - CinemaBooking - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>@ViewData["Title"] - CinemaBooking</title>
+
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,600,700%7cPoppins:300,400,500,600,700,800,900&display=swap">
+
+    <link rel="stylesheet" href="~/vendors/simplebar/simplebar.min.css">
+
+    <link rel="stylesheet"
+          href="~/assets/css/theme.css">
+
+    <link rel="stylesheet"
+          href="~/assets/css/user.css">
+
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+
+<body>
+
+    <main class="main" id="top">
+
+        <div class="container-fluid" data-layout="container">
+
+            <!-- ============================= -->
+            <!-- SIDEBAR -->
+            <!-- ============================= -->
+
+            <nav class="navbar navbar-light navbar-vertical navbar-expand-xl">
+
+                <div class="d-flex align-items-center">
+
+                    <button class="btn navbar-toggler-humburger-icon navbar-vertical-toggle"
+                            type="button"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="left"
+                            title="Toggle Navigation">
+
+                        <span class="navbar-toggle-icon">
+                            <span class="toggle-line"></span>
+                        </span>
+
+                    </button>
+
+                    <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+
+                        <div class="d-flex align-items-center py-3">
+
+                            <img class="me-2"
+                                 src="~/assets/img/icons/spot-illustrations/falcon.png"
+                                 width="40"
+                                 alt="CinemaBooking">
+
+                            <span class="font-sans-serif text-primary">
+                                CinemaBooking
+                            </span>
+
+                        </div>
+
+                    </a>
+
+                </div>
+
+
+                <div class="collapse navbar-collapse" id="navbarVerticalCollapse">
+
+                    <div class="navbar-vertical-content scrollbar">
+
+                        <ul class="navbar-nav flex-column mb-3"
+                            id="navbarVerticalNav">
+
+
+                            <!-- ============================= -->
+                            <!-- DASHBOARD -->
+                            <!-- ============================= -->
+
+                            <li class="nav-item">
+
+                                <a class="nav-link"
+                                   asp-controller="Home"
+                                   asp-action="Index">
+
+                                    <div class="d-flex align-items-center">
+
+                                        <span class="nav-link-icon">
+                                            <span class="fas fa-chart-pie"></span>
+                                        </span>
+
+                                        <span class="nav-link-text ps-1">
+                                            Dashboard
+                                        </span>
+
+                                    </div>
+
+                                </a>
+
+                            </li>
+
+
+                            <!-- ============================= -->
+                            <!-- CINEMA MANAGEMENT -->
+                            <!-- ============================= -->
+
+                            <li class="nav-item">
+
+                                <div class="row navbar-vertical-label-wrapper mt-3 mb-2">
+
+                                    <div class="col-auto navbar-vertical-label">
+                                        Cinema Management
+                                    </div>
+
+                                    <div class="col ps-0">
+                                        <hr class="mb-0 navbar-vertical-divider">
+                                    </div>
+
+                                </div>
+
+
+                                <!-- Movies -->
+
+                                <a class="nav-link"
+                                   asp-controller="Movies"
+                                   asp-action="Index">
+
+                                    <div class="d-flex align-items-center">
+
+                                        <span class="nav-link-icon">
+                                            <span class="fas fa-film"></span>
+                                        </span>
+
+                                        <span class="nav-link-text ps-1">
+                                            Movies
+                                        </span>
+
+                                    </div>
+
+                                </a>
+
+
+                                <!-- Categories -->
+
+                                <a class="nav-link"
+                                   asp-controller="Categories"
+                                   asp-action="Index">
+
+                                    <div class="d-flex align-items-center">
+
+                                        <span class="nav-link-icon">
+                                            <span class="fas fa-list"></span>
+                                        </span>
+
+                                        <span class="nav-link-text ps-1">
+                                            Categories
+                                        </span>
+
+                                    </div>
+
+                                </a>
+
+
+                                <!-- Cinemas -->
+
+                                <a class="nav-link"
+                                   asp-controller="Cinemas"
+                                   asp-action="Index">
+
+                                    <div class="d-flex align-items-center">
+
+                                        <span class="nav-link-icon">
+                                            <span class="fas fa-building"></span>
+                                        </span>
+
+                                        <span class="nav-link-text ps-1">
+                                            Cinemas
+                                        </span>
+
+                                    </div>
+
+                                </a>
+
+
+                                <!-- Actors -->
+
+                                <a class="nav-link"
+                                   asp-controller="Actors"
+                                   asp-action="Index">
+
+                                    <div class="d-flex align-items-center">
+
+                                        <span class="nav-link-icon">
+                                            <span class="fas fa-users"></span>
+                                        </span>
+
+                                        <span class="nav-link-text ps-1">
+                                            Actors
+                                        </span>
+
+                                    </div>
+
+                                </a>
+
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+            </nav>
+
+
+            <!-- ============================= -->
+            <!-- MAIN CONTENT -->
+            <!-- ============================= -->
+
+            <div class="content">
+
+                <!-- TOP NAVBAR -->
+
+                <nav class="navbar navbar-light navbar-glass navbar-top navbar-expand">
+
+                    <button class="btn navbar-toggler-humburger-icon navbar-toggler me-1 me-sm-3"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#navbarVerticalCollapse">
+
+                        <span class="navbar-toggle-icon">
+                            <span class="toggle-line"></span>
+                        </span>
+
+                    </button>
+
+
+                    <a class="navbar-brand me-1 me-sm-3"
+                       asp-controller="Home"
+                       asp-action="Index">
+
+                        <div class="d-flex align-items-center">
+
+                            <img class="me-2"
+                                 src="~/assets/img/icons/spot-illustrations/falcon.png"
+                                 width="40"
+                                 alt="">
+
+                            <span class="font-sans-serif text-primary">
+                                CinemaBooking
+                            </span>
+
+                        </div>
+
+                    </a>
+
+
+                    <ul class="navbar-nav navbar-nav-icons ms-auto flex-row align-items-center">
+
+                        <li class="nav-item">
+
+                            <a class="nav-link"
+                               asp-controller="Home"
+                               asp-action="Index">
+
+                                <span class="fas fa-home"></span>
+
+                            </a>
+
+                        </li>
+
+                    </ul>
+
+                </nav>
+
+
+                <!-- ============================= -->
+                <!-- PAGE CONTENT -->
+                <!-- ============================= -->
+
+                <div class="container-fluid">
+
+                    @RenderBody()
+
+                </div>
+
+            </div>
+
         </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    </main>
+
+
+    <!-- ============================= -->
+    <!-- JAVASCRIPT -->
+    <!-- ============================= -->
+
+    <script src="~/vendors/popper/popper.min.js"></script>
+
+    <script src="~/vendors/bootstrap/bootstrap.min.js"></script>
+
+    <script src="~/vendors/anchorjs/anchor.min.js"></script>
+
+    <script src="~/vendors/is/is.min.js"></script>
+
+    <script src="~/vendors/chart/chart.umd.js"></script>
+
+    <script src="~/vendors/countup/countUp.umd.js"></script>
+
+    <script src="~/vendors/echarts/echarts.min.js"></script>
+
+    <script src="~/vendors/dayjs/dayjs.min.js"></script>
+
+    <script src="~/vendors/fontawesome/all.min.js"></script>
+
+    <script src="~/vendors/lodash/lodash.min.js"></script>
+
+    <script src="~/vendors/list.js/list.min.js"></script>
+
+    <script src="~/assets/js/theme.js"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
+
 </html>
