@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Linq.Expressions;
 
 namespace CinemaBooking.Repositories
@@ -13,5 +14,21 @@ namespace CinemaBooking.Repositories
         void Remove(T entity);
         Task<bool> ExistsAsync(int id);
         Task SaveChangesAsync();
+        Task<EntityEntry<T>> InsertAsync(T entity);
+       // void Update(T entity);
+        void Delete(T entity);
+
+        Task<IEnumerable<T>> GetAllAsync(
+            Expression<Func<T, bool>>? filter = null,
+            Expression<Func<T, object>>[]? includes = null,
+            bool IsTraked = true
+            );
+        Task<T> GetOneAsync(
+            Expression<Func<T, bool>>? filter = null,
+            Expression<Func<T, object>>[]? includes = null,
+            bool IsTraked = true
+            );
+
+        Task<int> CommitAsync();
     }
 }

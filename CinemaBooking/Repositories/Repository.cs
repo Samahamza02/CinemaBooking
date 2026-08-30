@@ -1,6 +1,7 @@
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using CinemaBooking.Data;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace CinemaBooking.Repositories
 {
@@ -32,5 +33,30 @@ namespace CinemaBooking.Repositories
         public async Task<bool> ExistsAsync(int id) => await _dbSet.FindAsync(id) != null;
 
         public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
+
+        public Task<EntityEntry<T>> InsertAsync(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Delete(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, Expression<Func<T, object>>[]? includes = null, bool IsTraked = true)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<T> GetOneAsync(Expression<Func<T, bool>>? filter = null, Expression<Func<T, object>>[]? includes = null, bool IsTraked = true)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> CommitAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
